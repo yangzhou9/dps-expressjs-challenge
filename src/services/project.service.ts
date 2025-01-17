@@ -7,9 +7,8 @@ function getAllProjects() {
 
 function getProjectById(id: string) {
 	const project = db.query(`SELECT * FROM projects WHERE id = '${id}'`);
-	if (Object.keys(project).length === 0) {
+	if (Object.keys(project).length === 0)
 		throw new Error('The project with the given ID is not found.');
-	}
 	return project;
 }
 

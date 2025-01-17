@@ -87,10 +87,64 @@ app.get('/api/reports/', (req, res) => {
 });
 
 app.get('/api/reports/:id', (req, res) => {
-	const report = reportService.getReportById(req.params.id);
-	if (Object.keys(report).length === 0)
-		return res
-			.status(400)
-			.send('The report with the given ID is not found.');
+	let report;
+	try {
+		report = reportService.getReportById(req.params.id);
+	} catch (e) {
+		return res.status(404).send((<Error>e).message);
+	}
 	res.json(report);
+});
+
+app.post('/api/reports', (req, res) => {
+	// schema validation
+	const schema = Joi.object({
+		text: Joi.string().required(),
+		projectid: Joi.string().required(),
+	});
+	const { error } = schema.validate(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
+
+	const params = {
+		text: req.body.text,
+		projectid: req.body.projectid,
+	};
+	const report = reportService.addReport(params);
+	res.json(report);
+});
+
+app.put('/api/reports', (req, res) => {
+	//schema validation
+	const schema = Joi.object({
+		id: Joi.string().required(),
+		text: Joi.string(),
+		projectid: Joi.string(),
+	});
+	const { error } = schema.validate(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
+
+	const params = {
+		id: req.body.id,
+		text: req.body.text,
+		projectid: req.body.projectid,
+	};
+	try {
+		res.json(reportService.updateReport(params));
+	} catch (e) {
+		return res.status(404).send((<Error>e).message);
+	}
+});
+
+app.delete('/api/reports/:id', (req, res) => {
+	let report;
+	try {
+		report = reportService.deleteReportById(req.params.id);
+	} catch (e) {
+		return res.status(404).send((<Error>e).message);
+	}
+	return res.json(report);
+});
+
+app.get('/api/reportswith3samewords', (req, res) => {
+	res.json(reportService.getReportWith3SameWords());
 });
