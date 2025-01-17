@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 interface Report {
 	id: string;
 	text: string;
-	project_id: string;
+	projectid: string;
 }
 
 function getAllReports() {
