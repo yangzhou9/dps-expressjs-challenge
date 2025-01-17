@@ -8,7 +8,25 @@ dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+const AUTH_TOKEN = 'Password123';
 
+function authenticate(
+	req: express.Request,
+	res: express.Response,
+	next: express.NextFunction,
+) {
+	const token = req.headers['authorization'];
+
+	if (token === `Bearer ${AUTH_TOKEN}`) {
+		next();
+	} else {
+		res.status(401).json({
+			message: 'Unauthorized: Invalid or missing token',
+		});
+	}
+}
+
+app.use(authenticate);
 app.use(express.json());
 
 app.listen(port, () => {
