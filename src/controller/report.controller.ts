@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import Joi from 'joi';
-import db from './db.service';
+import db from '../services/db.service';
 
 interface Report {
 	id: string;
@@ -9,7 +9,7 @@ interface Report {
 	projectid: string;
 }
 
-export class ReportService {
+export class ReportController {
 	static async getAllReports(req: Request, res: Response) {
 		const projects = db.query('SELECT * FROM reports');
 		return res.status(200).json(projects);

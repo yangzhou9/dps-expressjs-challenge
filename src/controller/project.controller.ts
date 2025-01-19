@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import Joi from 'joi';
-import db from './db.service';
+import db from '../services/db.service';
 
-export class ProjectService {
+export class ProjectController {
 	static async getAllProjects(req: Request, res: Response) {
 		const projects = db.query('SELECT * FROM projects');
 		return res.status(200).json(projects);

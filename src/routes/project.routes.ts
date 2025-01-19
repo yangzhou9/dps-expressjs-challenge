@@ -1,18 +1,18 @@
 import express from 'express';
 import { authentification } from '../middleware/authentification';
-import { ProjectService } from '../services/project.service';
+import { ProjectController } from '../controller/project.controller';
 
 const Router = express.Router();
 
-Router.get('/projects', authentification, ProjectService.getAllProjects);
-Router.post('/projects', authentification, ProjectService.addProject);
+Router.get('/projects', authentification, ProjectController.getAllProjects);
+Router.post('/projects', authentification, ProjectController.addProject);
 
-Router.get('/projects/:id', authentification, ProjectService.getProjectById);
-Router.put('/projects/:id', authentification, ProjectService.updateProject);
+Router.get('/projects/:id', authentification, ProjectController.getProjectById);
+Router.put('/projects/:id', authentification, ProjectController.updateProject);
 Router.delete(
 	'/projects/:id',
 	authentification,
-	ProjectService.deleteProjectById,
+	ProjectController.deleteProjectById,
 );
 
 export { Router as projectRouter };
